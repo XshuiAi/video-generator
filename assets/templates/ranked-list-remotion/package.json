@@ -1,0 +1,21 @@
+{
+  "name": "ranked-list-remotion",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "still": "remotion still src/index.ts PluginTop10 out/still.png --frame=150",
+    "render": "remotion render src/index.ts PluginTop10 out/codex-plugin-top10.mp4 --codec=h264 --crf=18"
+  },
+  "dependencies": {
+    "@remotion/cli": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "remotion": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "latest"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "orbit-opener-remotion",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "still:center": "remotion still src/index.ts OrbitOpener out/still-center.png --frame=70",
+    "still:title": "remotion still src/index.ts OrbitOpener out/still-title.png --frame=165",
+    "still:overview": "remotion still src/index.ts OrbitOpener out/still-overview.png --frame=292",
+    "still:signature": "remotion still src/index.ts OrbitOpener out/still-signature.png --frame=418",
+    "render": "remotion render src/index.ts OrbitOpener out/codex-plugin-orbit-opener.mp4 --codec=h264 --crf=18"
+  },
+  "dependencies": {
+    "@remotion/cli": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "remotion": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "latest"
+  }
+}

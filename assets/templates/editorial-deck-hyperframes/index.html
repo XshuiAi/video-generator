@@ -1,0 +1,1049 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #fbfbf8;
+        color: #151515;
+        font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+          "Microsoft YaHei", sans-serif;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #fbfbf8;
+      }
+
+      .scene {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        overflow: hidden;
+      }
+
+      .paper {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        padding: 118px 150px 96px;
+        background:
+          linear-gradient(90deg, rgba(128, 146, 155, 0.06) 1px, transparent 1px) 1410px 86px / 42px 42px no-repeat,
+          linear-gradient(rgba(128, 146, 155, 0.06) 1px, transparent 1px) 1410px 86px / 42px 42px no-repeat,
+          #fbfbf8;
+        overflow: hidden;
+      }
+
+      .corner-name {
+        position: absolute;
+        right: 78px;
+        top: 50px;
+        z-index: 30;
+        padding: 0 0 8px 18px;
+        background: transparent;
+        color: #4e5964;
+        font-size: 18px;
+        letter-spacing: 0.08em;
+        border-bottom: 1px solid rgba(78, 89, 100, 0.34);
+      }
+
+      .microbrand {
+        position: absolute;
+        left: 112px;
+        top: 82px;
+        z-index: 24;
+        color: #151515;
+        font-size: 17px;
+        line-height: 1.1;
+        font-family: "Kaiti SC", "STKaiti", "KaiTi", cursive;
+      }
+
+      .paper-index {
+        position: absolute;
+        right: 110px;
+        bottom: 60px;
+        color: #151515;
+        font-size: 18px;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+      }
+
+      .page-mark {
+        position: absolute;
+        right: 106px;
+        top: 84px;
+        color: #151515;
+        font-size: 18px;
+        letter-spacing: 0.18em;
+      }
+
+      .display {
+        font-family: "Times New Roman", "Songti SC", "STSong", serif;
+        font-weight: 500;
+        letter-spacing: 0;
+      }
+
+      .hand {
+        font-family: "Kaiti SC", "STKaiti", "KaiTi", cursive;
+        font-weight: 500;
+        letter-spacing: 0;
+      }
+
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+
+      .kicker {
+        font-size: 20px;
+        color: #626a73;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .title-xl {
+        font-size: 112px;
+        line-height: 0.98;
+      }
+
+      .title-lg {
+        font-size: 82px;
+        line-height: 1.02;
+      }
+
+      .title-md {
+        font-size: 58px;
+        line-height: 1.05;
+      }
+
+      .body-lg {
+        font-size: 32px;
+        line-height: 1.48;
+      }
+
+      .body-md {
+        font-size: 25px;
+        line-height: 1.5;
+      }
+
+      .body-sm {
+        font-size: 20px;
+        line-height: 1.45;
+      }
+
+      .muted {
+        color: #626a73;
+      }
+
+      .accent {
+        color: #1f5fba;
+      }
+
+      .ink-block {
+        display: inline-block;
+        padding: 8px 18px 9px;
+        background: #151515;
+        color: #fff;
+      }
+
+      .rule {
+        width: 132px;
+        height: 3px;
+        background: #151515;
+      }
+
+      .thin-rule {
+        height: 1px;
+        background: rgba(21, 21, 21, 0.22);
+      }
+
+      .soft-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(18px);
+        opacity: 0.72;
+        mix-blend-mode: multiply;
+        pointer-events: none;
+      }
+
+      .blob-cyan {
+        background: #70d4e8;
+      }
+
+      .blob-pink {
+        background: #f0b5d8;
+      }
+
+      .blob-yellow {
+        background: #f5d85b;
+      }
+
+      .scribble {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .scribble path {
+        fill: none;
+        stroke: #786858;
+        stroke-width: 4;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        opacity: 0.72;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 0.88fr 1.12fr;
+        gap: 52px;
+        height: 100%;
+        align-items: center;
+      }
+
+      .grid-half {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        height: 100%;
+        align-items: center;
+      }
+
+      .image-card {
+        position: relative;
+        background: #fff;
+        border: 1px solid rgba(21, 21, 21, 0.1);
+        box-shadow: 0 14px 28px rgba(44, 50, 55, 0.16);
+        overflow: hidden;
+      }
+
+      .image-card img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .image-card.contain img {
+        object-fit: contain;
+        background: #fff;
+      }
+
+      .caption {
+        position: absolute;
+        left: 18px;
+        bottom: 16px;
+        padding: 7px 12px;
+        background: rgba(255, 255, 255, 0.86);
+        color: #151515;
+        font-size: 17px;
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(21, 21, 21, 0.08);
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      .chip {
+        padding: 10px 16px;
+        border: 1px solid rgba(21, 21, 21, 0.22);
+        background: rgba(255, 255, 255, 0.72);
+        font-size: 21px;
+      }
+
+      .feature-list {
+        display: grid;
+        gap: 18px;
+      }
+
+      .feature-item {
+        display: grid;
+        grid-template-columns: 74px 1fr;
+        gap: 22px;
+        align-items: start;
+      }
+
+      .feature-number {
+        height: 54px;
+        border-bottom: 4px solid #151515;
+        font-family: "Times New Roman", "Songti SC", serif;
+        font-size: 42px;
+        line-height: 1;
+      }
+
+      .feature-item strong {
+        display: block;
+        font-size: 30px;
+        line-height: 1.18;
+        margin-bottom: 5px;
+      }
+
+      .feature-item span {
+        display: block;
+        font-size: 21px;
+        line-height: 1.42;
+        color: #626a73;
+      }
+
+      .mini-table {
+        display: grid;
+        grid-template-columns: 1fr 1.15fr;
+        border-top: 1px solid rgba(21, 21, 21, 0.22);
+        border-left: 1px solid rgba(21, 21, 21, 0.22);
+      }
+
+      .mini-table div {
+        padding: 16px 18px;
+        border-right: 1px solid rgba(21, 21, 21, 0.22);
+        border-bottom: 1px solid rgba(21, 21, 21, 0.22);
+        font-size: 21px;
+        line-height: 1.25;
+      }
+
+      .mini-table .head {
+        background: #f2f4f5;
+        font-weight: 700;
+      }
+
+      .timeline {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-top: 28px;
+        padding-top: 42px;
+      }
+
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 20px;
+        height: 2px;
+        background: #151515;
+      }
+
+      .moment {
+        position: relative;
+        min-height: 146px;
+        padding: 28px 22px 20px;
+        border: 1px solid rgba(21, 21, 21, 0.18);
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .moment::before {
+        content: "";
+        position: absolute;
+        left: 22px;
+        top: -31px;
+        width: 20px;
+        height: 20px;
+        background: #151515;
+        border-radius: 50%;
+      }
+
+      .moment b {
+        display: block;
+        font-size: 28px;
+        margin-bottom: 8px;
+      }
+
+      .moment span {
+        display: block;
+        font-size: 18px;
+        line-height: 1.35;
+        color: #626a73;
+      }
+
+      .phone-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        align-items: end;
+      }
+
+      .phone-card {
+        height: 580px;
+        border-radius: 34px;
+        overflow: hidden;
+        border: 10px solid #151515;
+        background: #fff;
+        box-shadow: 0 18px 30px rgba(35, 40, 46, 0.22);
+      }
+
+      .phone-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .steps {
+        display: grid;
+        gap: 18px;
+        margin-top: 28px;
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: 54px 1fr;
+        gap: 16px;
+        align-items: start;
+        font-size: 24px;
+        line-height: 1.4;
+      }
+
+      .step i {
+        display: grid;
+        place-items: center;
+        width: 48px;
+        height: 48px;
+        border: 1px solid #151515;
+        border-radius: 50%;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-size: 24px;
+      }
+
+      .quote-card {
+        padding: 32px 36px;
+        border-left: 12px solid #151515;
+        background: #f7f8f6;
+        font-size: 32px;
+        line-height: 1.35;
+      }
+
+      .prompt-card {
+        padding: 28px 30px;
+        background: #111;
+        color: #fff;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 22px;
+        line-height: 1.45;
+        box-shadow: 0 16px 26px rgba(0, 0, 0, 0.2);
+      }
+
+      .branch-map {
+        position: relative;
+        height: 360px;
+        margin-top: 28px;
+      }
+
+      .branch-node {
+        position: absolute;
+        width: 320px;
+        padding: 22px 24px;
+        background: #fff;
+        border: 1px solid rgba(21, 21, 21, 0.25);
+        box-shadow: 0 12px 24px rgba(40, 46, 52, 0.14);
+        font-size: 22px;
+        line-height: 1.35;
+      }
+
+      .branch-node.main {
+        left: 0;
+        top: 114px;
+      }
+
+      .branch-node.a {
+        right: 78px;
+        top: 34px;
+      }
+
+      .branch-node.b {
+        right: 0;
+        bottom: 16px;
+      }
+
+      .branch-line {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .resource-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px 34px;
+        margin-top: 34px;
+      }
+
+      .resource {
+        padding: 18px 0;
+        border-bottom: 1px solid rgba(21, 21, 21, 0.18);
+        font-size: 25px;
+      }
+
+      .progress {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 3px;
+        background: rgba(21, 21, 21, 0.035);
+        z-index: 40;
+      }
+
+      .progress-fill {
+        width: 0%;
+        height: 100%;
+        background: rgba(21, 21, 21, 0.22);
+      }
+
+      .contact-layout {
+        display: grid;
+        grid-template-columns: 0.76fr 1.24fr;
+        gap: 58px;
+        height: 100%;
+        align-items: center;
+      }
+
+      .intro-sheet {
+        height: 840px;
+        background: #fff;
+        border: 1px solid rgba(78, 89, 100, 0.2);
+        box-shadow: 0 18px 28px rgba(55, 66, 72, 0.11);
+        overflow: hidden;
+      }
+
+      .intro-sheet img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .contact-title {
+        font-size: 76px;
+        line-height: 1;
+      }
+
+      .contact-copy {
+        width: 720px;
+        margin-top: 24px;
+        color: #4e5964;
+        font-size: 28px;
+        line-height: 1.5;
+      }
+
+      .qr-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+        margin-top: 44px;
+      }
+
+      .qr-card {
+        padding: 26px 26px 24px;
+        background: #fff;
+        border: 1px solid rgba(78, 89, 100, 0.2);
+        box-shadow: 0 14px 26px rgba(55, 66, 72, 0.1);
+      }
+
+      .qr-card img {
+        width: 100%;
+        height: 390px;
+        object-fit: contain;
+        display: block;
+      }
+
+      .qr-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(78, 89, 100, 0.16);
+        font-size: 24px;
+      }
+
+      .qr-label span {
+        color: #7b838b;
+        font-size: 17px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="82"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div class="corner-name">YOUR BRAND</div>
+      <div class="progress"><div class="progress-fill"></div></div>
+
+      <section id="s01" class="scene clip" data-start="0" data-duration="6" data-track-index="1">
+        <div class="paper">
+          <div class="microbrand">Codex<br />share</div>
+          <div class="page-mark">PLEASE START / 2026.05</div>
+          <div class="soft-blob blob-pink" style="width: 360px; height: 270px; left: 690px; top: 120px"></div>
+          <div class="soft-blob blob-cyan" style="width: 220px; height: 190px; left: 930px; top: 154px"></div>
+          <svg class="scribble" viewBox="0 0 1736 872" aria-hidden="true">
+            <path d="M94 118 C258 12, 360 186, 548 160 S842 68, 846 290 1060 480, 1220 390 1462 382, 1404 560 1360 720, 1528 804" />
+          </svg>
+          <div style="position: absolute; left: 116px; bottom: 154px">
+            <p class="kicker">OFFLINE SHARE / CODEX UPDATE</p>
+            <h1 class="display title-xl" style="margin-top: 22px">Codex 5 月更新</h1>
+            <p class="hand" style="font-size: 46px; margin-top: 28px">手机远控、Chrome、Appshots、分支对话、Goal mode</p>
+          </div>
+          <div class="paper-index">Created for Codex offline sharing</div>
+        </div>
+      </section>
+
+      <section id="s02" class="scene clip" data-start="6" data-duration="6" data-track-index="1">
+        <div class="paper">
+          <div class="microbrand">Codex<br />share</div>
+          <svg class="scribble" viewBox="0 0 1736 872" aria-hidden="true">
+            <path d="M70 610 C240 486, 330 790, 520 612 S804 280, 1054 320 1338 556, 1600 340" />
+          </svg>
+          <div class="grid-half">
+            <div>
+              <p class="kicker">NOT JUST BUTTONS</p>
+              <h2 class="display title-lg" style="margin-top: 18px">它开始接入<br />真实工作现场。</h2>
+              <div class="rule" style="margin-top: 38px"></div>
+              <p class="body-md muted" style="width: 620px; margin-top: 34px">
+                这次更新不是多几个入口，而是 Codex 从电脑前的代码助手，变成可以跨设备、跨网页、跨屏幕持续协作的工作台。
+              </p>
+            </div>
+            <div class="feature-list">
+              <div class="feature-item">
+                <div class="feature-number">01</div>
+                <div><strong>手机远程控制</strong><span>离开电脑后继续看进度、补指令、批准下一步。</span></div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-number">02</div>
+                <div><strong>Chrome 插件</strong><span>使用我的登录态处理网页任务，每站点需要授权。</span></div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-number">03</div>
+                <div><strong>Appshots</strong><span>把当前窗口截图和可读文字直接发给 Codex。</span></div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-number">04</div>
+                <div><strong>分支对话 + Goal mode</strong><span>不确定就开岔路，长任务用完成标准约束。</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="paper-index">Highlights</div>
+        </div>
+      </section>
+
+      <section id="s03" class="scene clip" data-start="12" data-duration="6" data-track-index="1">
+        <div class="paper">
+          <div class="microbrand">Codex<br />setup</div>
+          <div class="soft-blob blob-cyan" style="width: 230px; height: 230px; left: 1030px; top: 80px"></div>
+          <div class="grid-2">
+            <div>
+              <p class="kicker">GET READY</p>
+              <h2 class="display title-lg" style="margin-top: 16px">先装好<br />Codex 怎么开始用</h2>
+              <p class="body-md muted" style="margin-top: 28px">
+                很多人不是不会用，而是第一步不知道从哪里下载。线下分享先把入口讲清楚。
+              </p>
+              <div class="mini-table" style="margin-top: 34px">
+                <div class="head">我要做什么</div><div class="head">入口</div>
+                <div>登录 ChatGPT</div><div>chatgpt.com</div>
+                <div>下载 Codex App</div><div>developers.openai.com/codex/app</div>
+                <div>手机控制</div><div>ChatGPT 手机 App 最新版</div>
+              </div>
+            </div>
+            <div class="image-card contain" style="height: 610px">
+              <img src="assets/clean/install.png" alt="Codex App 官方下载与安装入口" />
+              <div class="caption">文档截图：Codex App 官方下载与安装入口</div>
+            </div>
+          </div>
+          <div class="paper-index">Install first</div>
+        </div>
+      </section>
+
+      <section id="s04" class="scene clip" data-start="18" data-duration="7" data-track-index="1">
+        <div class="paper">
+          <div class="microbrand">Codex<br />timeline</div>
+          <div class="grid-half">
+            <div>
+              <p class="kicker">MAY RELEASE MAP</p>
+              <h2 class="display title-md" style="margin-top: 14px">5 月更新，一张图先看懂</h2>
+              <p class="body-md muted" style="margin-top: 26px">
+                5/07 Chrome 插件，5/14 手机远程控制，5/21 Appshots 与 Goal mode。先给观众一张时间线，再展开最有用的功能。
+              </p>
+              <div class="timeline">
+                <div class="moment"><b>5/07</b><span>Codex for Chrome 接入登录态网页任务。</span></div>
+                <div class="moment"><b>5/14</b><span>手机远程控制与 Remote SSH。</span></div>
+                <div class="moment"><b>5/21</b><span>Appshots / Goal mode / 浏览器标注增强。</span></div>
+                <div class="moment"><b>持续</b><span>CLI、Hooks、权限配置、稳定性补强。</span></div>
+              </div>
+            </div>
+            <div class="image-card contain" style="height: 610px">
+              <img src="assets/clean/may-overview.png" alt="Codex 5 月更新总览图" />
+              <div class="caption">文档截图：5 月更新总览图</div>
+            </div>
+          </div>
+          <div class="paper-index">Overview</div>
+        </div>
+      </section>
+
+      <section id="s05" class="scene clip" data-start="25" data-duration="5" data-track-index="1">
+        <div class="paper">
+          <div class="microbrand">Codex<br />CLI</div>
+          <div class="soft-blob blob-yellow" style="width: 220px; height: 180px; left: 96px; bottom: 96px"></div>
+          <div class="grid-2" style="grid-template-columns: 1.08fr 0.92fr">
+            <div class="image-card contain" style="height: 620px">
+              <img src="assets/clean/cli-updates.png" alt="CLI / 开发者端更新图" />
+              <div class="caption">文档截图：CLI / 开发者端更新图</div>
+            </div>
+            <div>
+              <p class="kicker">DEVELOPER SIDE</p>
+              <h2 class="display title-md" style="margin-top: 18px">命令行端也在补强</h2>
+              <div class="chips" style="margin-top: 34px">
+                <span class="chip">remote-control</span>
+                <span class="chip">Goal</span>
+                <span class="chip">Python SDK</span>
+                <span class="chip">插件发现</span>
+                <span class="chip">权限配置</span>
+              </div>
+              <p class="body-md muted" style="margin-top: 40px">
+                这一页快速带过：重点不是让所有人立刻用 CLI，而是说明 Codex 的桌面、手机和开发者端正在同步进化。
+              </p>
+            </div>
+          </div>
+          <div class="paper-index">CLI Updates</div>
+        </div>
+      </section>
+
+      <section id="s06" class="scene clip" data-start="30" data-duration="5" data-track-index="1">
+        <div class="paper">
+          <div class="microbrand">Codex<br />top 5</div>
+          <div class="soft-blob blob-pink" style="width: 240px; height: 240px; right: 330px; top: 160px"></div>
+          <div class="soft-blob blob-cyan" style="width: 190px; height: 190px; right: 240px; top: 210px"></div>
+          <svg class="scribble" viewBox="0 0 1736 872" aria-hidden="true">
+            <path d="M210 98 C390 238, 450 16, 606 176 S820 402, 1054 286 1398 178, 1588 348" />
+          </svg>
+          <div style="position: absolute; left: 130px; top: 154px; width: 660px">
+            <p class="kicker">THE 5 WORTH EXPANDING</p>
+            <h2 class="display title-lg" style="margin-top: 20px">最值得展开的<br /><span class="ink-block">5 个功能</span></h2>
+          </div>
+          <div style="position: absolute; right: 126px; top: 158px; width: 690px" class="feature-list">
+            <div class="feature-item"><div class="feature-number">01</div><div><strong>手机远程控制</strong><span>手机是控制台，不是移动 IDE。</span></div></div>
+            <div class="feature-item"><div class="feature-number">02</div><div><strong>Chrome 插件</strong><span>有登录态的网页任务终于能接上。</span></div></div>
+            <div class="feature-item"><div class="feature-number">03</div><div><strong>Appshots</strong><span>不用描述屏幕，直接给 Codex 看。</span></div></div>
+            <div class="feature-item"><div class="feature-number">04</div><div><strong>分支对话</strong><span>原方案不动，另开一条路线试。</span></div></div>
+            <div class="feature-item"><div class="feature-number">05</div><div><strong>Goal mode</strong><span>把“帮我做一下”改成“做到什么算完成”。</span></div></div>
+          </div>
+          <div class="paper-index">Top Features</div>
+        </div>
+      </section>
+
+      <section id="s07" class="scene clip" data-start="35" data-duration="7" data-track-index="1">
+        <div class="paper">
+          <div class="microbrand">Codex<br />mobile</div>
+          <div class="grid-half">
+            <div>
+              <p class="kicker">01 / MOBILE REMOTE CONTROL</p>
+              <h2 class="display title-md" style="margin-top: 16px">我不坐在电脑前，<br />也能继续推进任务。</h2>
+              <p class="body-md muted" style="margin-top: 28px">
+                重点不是“手机上写代码”，而是手机可以远程控制那台正在运行 Codex 的电脑。
+              </p>
+              <div class="quote-card" style="margin-top: 34px">
+                手机负责看进度、补指令、批准下一步；代码、凭证、权限还是留在主机上。
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1.12fr 0.88fr; gap: 22px; align-items: end">
+              <div class="image-card contain" style="height: 520px">
+                <img src="assets/clean/mobile-official.png" alt="OpenAI 官方公告" />
+                <div class="caption">官方公告</div>
+              </div>
+              <div class="image-card contain" style="height: 620px">
+                <img src="assets/clean/mobile-x.png" alt="OpenAI 官方 X" />
+                <div class="caption">官方 X</div>
+              </div>
+            </div>
+          </div>
+          <div class="paper-index">Mobile Remote</div>
+        </div>
+      </section>
+
+      <section id="s08" class="scene clip" data-start="42" data-duration="7" data-track-index="1">
+        <div class="paper">
+          <div class="microbrand">Codex<br />mobile</div>
+          <div class="grid-2">
+            <div>
+              <p class="kicker">SETUP FLOW</p>
+              <h2 class="display title-md" style="margin-top: 16px">连接步骤其实不复杂</h2>
+              <div class="steps">
+                <div class="step"><i>1</i><span>电脑端、手机端都更新 ChatGPT App。</span></div>
+                <div class="step"><i>2</i><span>在电脑端 Codex 打开 <b>Set up Codex mobile</b>。</span></div>
+                <div class="step"><i>3</i><span>按提示扫码授权。</span></div>
+                <div class="step"><i>4</i><span>手机端进入 Codex，选择项目或线程继续。</span></div>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 0.95fr 1.05fr; grid-template-rows: 1fr 1fr; gap: 18px">
+              <div class="image-card contain" style="height: 290px"><img src="assets/clean/mobile-setup-1.png" alt="电脑端 Codex mobile 设置入口" /></div>
+              <div class="image-card contain" style="height: 290px"><img src="assets/clean/mobile-setup-2.png" alt="电脑端按提示开启手机连接" /></div>
+              <div class="image-card contain" style="grid-column: 1 / 3; height: 300px"><img src="assets/clean/mobile-setup-3.png" alt="电脑端进入扫码和授权流程" /><div class="caption">文档截图：电脑端手机连接流程</div></div>
+            </div>
+          </div>
+          <div class="paper-index">Setup</div>
+        </div>
+      </section>
+
+      <section id="s09" class="scene clip" data-start="49" data-duration="7" data-track-index="1">
+        <div class="paper">
+          <div class="microbrand">Codex<br />mobile</div>
+          <div>
+            <p class="kicker">PHONE AS CONTROL DESK</p>
+            <h2 class="display title-md" style="margin-top: 14px">手机端连接好以后，就能接着推进。</h2>
+          </div>
+          <div class="phone-grid" style="margin-top: 36px">
+            <div>
+              <div class="phone-card"><img src="assets/clean/phone-project.png" alt="手机端进入 Codex 项目和线程" /></div>
+              <p class="body-sm" style="margin-top: 14px">进入项目和线程</p>
+            </div>
+            <div>
+              <div class="phone-card"><img src="assets/clean/phone-output.png" alt="手机端查看任务输出" /></div>
+              <p class="body-sm" style="margin-top: 14px">查看任务输出</p>
+            </div>
+            <div>
+              <div class="phone-card"><img src="assets/clean/phone-command.png" alt="手机端继续补充指令" /></div>
+              <p class="body-sm" style="margin-top: 14px">继续补指令</p>
+            </div>
+            <div>
+              <div class="phone-card"><img src="assets/clean/phone-wait.png" alt="手机端等待电脑端 Codex 继续执行" /></div>
+              <p class="body-sm" style="margin-top: 14px">等待电脑执行</p>
+            </div>
+          </div>
+          <div class="paper-index">Human Decision</div>
+        </div>
+      </section>
+
+      <section id="s10" class="scene clip" data-start="56" data-duration="7" data-track-index="1">
+        <div class="paper">
+          <div class="microbrand">Codex<br />Chrome</div>
+          <div class="grid-2" style="grid-template-columns: 1fr 1fr">
+            <div>
+              <p class="kicker">02 / CHROME EXTENSION</p>
+              <h2 class="display title-md" style="margin-top: 16px">让 Codex 用我的登录态处理网页任务</h2>
+              <p class="body-md muted" style="margin-top: 28px">
+                后台、邮箱、CRM、公众号后台这类任务，以前经常卡在登录态。Chrome 插件让 Codex 在授权后读取和操作网页。
+              </p>
+              <div class="prompt-card" style="margin-top: 34px">
+                @Chrome 打开我已经登录的后台，只读检查最近一篇草稿的标题、封面和正文是否一致。不要发布，不要修改任何内容。
+              </div>
+            </div>
+            <div style="position: relative; height: 640px">
+              <div class="image-card contain chrome-shot-a" style="position: absolute; left: 0; top: 36px; width: 620px; height: 350px">
+                <img src="assets/clean/chrome-webstore.png" alt="Chrome Web Store" />
+              </div>
+              <div class="image-card contain chrome-shot-b" style="position: absolute; right: 0; bottom: 10px; width: 650px; height: 372px">
+                <img src="assets/clean/chrome-extension.png" alt="Chrome extension screenshot" />
+                <div class="caption">文档截图：Chrome 插件安装与权限</div>
+              </div>
+            </div>
+          </div>
+          <div class="paper-index">Chrome</div>
+        </div>
+      </section>
+
+      <section id="s11" class="scene clip" data-start="63" data-duration="7" data-track-index="1">
+        <div class="paper">
+          <div class="microbrand">Codex<br />Appshots</div>
+          <div class="grid-2" style="grid-template-columns: 0.94fr 1.06fr">
+            <div>
+              <p class="kicker">03 / APPSHOTS</p>
+              <h2 class="display title-md" style="margin-top: 16px">不用描述屏幕，<br />直接给 Codex 看。</h2>
+              <p class="body-md muted" style="margin-top: 28px">
+                Mac 上按两下 Command，把当前窗口截图和可读取文字发进 Codex 线程。UI 间距、报错页、设置页都更好解释。
+              </p>
+              <div class="chips" style="margin-top: 32px">
+                <span class="chip">看 UI 间距</span>
+                <span class="chip">读报错页</span>
+                <span class="chip">理解设置页</span>
+                <span class="chip">配合 Figma / 预览窗口</span>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-rows: 0.62fr 0.38fr; gap: 18px">
+              <div class="image-card contain" style="height: 372px">
+                <img src="assets/clean/appshots-main.png" alt="Appshots 主图" />
+                <div class="caption">文档截图：Appshots 能力</div>
+              </div>
+              <div class="image-card contain" style="height: 236px">
+                <img src="assets/clean/appshots-example.png" alt="Appshots 示例" />
+                <div class="caption">示例：截图 + 指令一起交给 Codex</div>
+              </div>
+            </div>
+          </div>
+          <div class="paper-index">Appshots</div>
+        </div>
+      </section>
+
+      <section id="s12" class="scene clip" data-start="70" data-duration="7" data-track-index="1">
+        <div class="paper">
+          <div class="microbrand">Codex<br />workflow</div>
+          <div class="grid-half">
+            <div>
+              <p class="kicker">04 / BRANCH CONVERSATION</p>
+              <h2 class="display title-md" style="margin-top: 16px">不确定，就开一条岔路试试。</h2>
+              <p class="body-md muted" style="margin-top: 24px">
+                当一个问题有两种方案时，原线程不要纠结。开分支试另一条路线，最后对比风险。
+              </p>
+              <div class="branch-map">
+                <svg class="branch-line" viewBox="0 0 700 360" aria-hidden="true">
+                  <path d="M190 180 C310 110, 366 98, 430 92" stroke="#151515" stroke-width="4" fill="none" stroke-linecap="round" />
+                  <path d="M190 180 C318 234, 390 286, 472 286" stroke="#151515" stroke-width="4" fill="none" stroke-linecap="round" />
+                </svg>
+                <div class="branch-node main">原线程<br /><span class="muted">稳定路线不动</span></div>
+                <div class="branch-node a">分支 A<br /><span class="muted">保守修法</span></div>
+                <div class="branch-node b">分支 B<br /><span class="muted">重构方案</span></div>
+              </div>
+            </div>
+            <div>
+              <p class="kicker">05 / GOAL MODE</p>
+              <h2 class="display title-md" style="margin-top: 16px">把“帮我做一下”改成“做到什么算完成”。</h2>
+              <div class="image-card contain" style="height: 338px; margin-top: 28px">
+                <img src="assets/clean/goal-mode.png" alt="Goal mode" />
+                <div class="caption">文档截图：Goal mode</div>
+              </div>
+              <div class="prompt-card" style="margin-top: 24px; font-size: 19px">
+                /goal 把首页加载体验优化到可验证状态：记录问题，修复性能和布局，最后用截图和测试命令证明结果。
+              </div>
+            </div>
+          </div>
+          <div class="paper-index">Branch + Goal</div>
+        </div>
+      </section>
+
+      <section id="s13" class="scene clip" data-start="77" data-duration="5" data-track-index="1">
+        <div class="paper">
+          <div class="microbrand">Codex<br />finish</div>
+          <div class="soft-blob blob-cyan" style="width: 300px; height: 260px; left: 760px; top: 130px"></div>
+          <div class="soft-blob blob-pink" style="width: 230px; height: 230px; left: 940px; top: 184px"></div>
+          <svg class="scribble" viewBox="0 0 1736 872" aria-hidden="true">
+            <path d="M100 248 C300 104, 430 386, 620 248 S820 82, 1030 248 1294 552, 1588 430" />
+          </svg>
+          <div style="position: absolute; left: 130px; top: 152px; width: 730px">
+            <p class="kicker">KEEP EXPLORING</p>
+            <h2 class="display title-lg" style="margin-top: 16px">资料都整理好了</h2>
+            <p class="hand" style="font-size: 44px; margin-top: 22px">想要文档，评论区留「Codex」</p>
+          </div>
+          <div class="resource-list" style="position: absolute; right: 126px; top: 170px; width: 680px">
+            <div class="resource">Codex 官方 Changelog</div>
+            <div class="resource">Codex 官方 Use Cases</div>
+            <div class="resource">Chrome extension 文档</div>
+            <div class="resource">Appshots 官方文档</div>
+            <div class="resource">Goal mode 官方文档</div>
+            <div class="resource">Plugins 官方文档</div>
+          </div>
+          <div class="paper-index">YOUR BRAND / OFFLINE SHARE</div>
+        </div>
+      </section>
+
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const scenes = [
+        ["#s01", 0, 6],
+        ["#s02", 6, 6],
+        ["#s03", 12, 6],
+        ["#s04", 18, 7],
+        ["#s05", 25, 5],
+        ["#s06", 30, 5],
+        ["#s07", 35, 7],
+        ["#s08", 42, 7],
+        ["#s09", 49, 7],
+        ["#s10", 56, 7],
+        ["#s11", 63, 7],
+        ["#s12", 70, 7],
+        ["#s13", 77, 5],
+      ];
+
+      function fromIf(targets, vars, at) {
+        const nodes = gsap.utils.toArray(targets);
+        if (nodes.length) tl.from(nodes, vars, at);
+      }
+
+      function toIf(targets, vars, at) {
+        const nodes = gsap.utils.toArray(targets);
+        if (nodes.length) tl.to(nodes, vars, at);
+      }
+
+      function sceneIn(selector, at, duration) {
+        tl.set(selector, { opacity: 1 }, at);
+        fromIf(`${selector} .kicker, ${selector} h1, ${selector} h2, ${selector} .hand, ${selector} .body-md, ${selector} .body-lg`, {
+          opacity: 0,
+          y: 26,
+          duration: 0.62,
+          stagger: 0.08,
+          ease: "power3.out",
+        }, at + 0.42);
+        fromIf(`${selector} .feature-item, ${selector} .step, ${selector} .moment, ${selector} .chip, ${selector} .resource`, {
+          opacity: 0,
+          y: 22,
+          duration: 0.48,
+          stagger: 0.055,
+          ease: "power2.out",
+        }, at + 0.8);
+        fromIf(`${selector} .image-card, ${selector} .phone-card, ${selector} .quote-card, ${selector} .prompt-card, ${selector} .branch-node, ${selector} .mini-table`, {
+          opacity: 0,
+          y: 34,
+          scale: 0.985,
+          duration: 0.58,
+          stagger: 0.07,
+          ease: "power3.out",
+        }, at + 0.72);
+        fromIf(`${selector} .soft-blob`, {
+          opacity: 0,
+          scale: 0.7,
+          duration: 1.2,
+          stagger: 0.1,
+          ease: "power2.out",
+        }, at + 0.2);
+        fromIf(`${selector} .scribble path, ${selector} .branch-line path`, {
+          strokeDasharray: 1800,
+          strokeDashoffset: 1800,
+          duration: 1.5,
+          stagger: 0.12,
+          ease: "power2.out",
+        }, at + 0.35);
+        toIf(`${selector} .soft-blob`, {
+          x: 22,
+          y: -12,
+          scale: 1.06,
+          duration: Math.max(2, duration - 1),
+          ease: "sine.inOut",
+        }, at + 0.7);
+        tl.to(selector, { opacity: 0, duration: 0.35, ease: "power2.in" }, at + duration - 0.35);
+      }
+
+      scenes.forEach(([selector, at, duration]) => sceneIn(selector, at, duration));
+      tl.from(".corner-name", { opacity: 0, y: -14, duration: 0.45, ease: "power2.out" }, 0.3);
+      tl.to(".progress-fill", { width: "100%", duration: 82, ease: "none" }, 0);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

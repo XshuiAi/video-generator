@@ -1,0 +1,4 @@
+interface:
+  display_name: "Video Generator｜视频生成器"
+  short_description: "把内容、截图和配图生成横屏或竖屏动效视频。"
+  default_prompt: "Use $video-generator to turn this content, source material, or image set into a horizontal or vertical visual video; ask for content, assets, palette, aspect ratio, and keyframe approval before rendering."
