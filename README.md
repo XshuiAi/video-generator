@@ -83,3 +83,9 @@ ln -sfn "/path/to/video-generator" "$HOME/.codex/skills/video-generator"
 - `references/`: 工作流、视觉规范、模板目录、提示词和动效说明。
 - `assets/templates/`: 可复制的视频工程模板。
 - `scripts/`: 模板复制与成片验收脚本。
+
+## 关于作者
+
+**Sherry小水** · AI 博主 / AI Builder
+
+[GitHub](https://github.com/XshuiAi) · [抖音](https://v.douyin.com/9_PhmenzPd4/) · [小红书](https://xhslink.com/m/11P8CyKlR2D)
